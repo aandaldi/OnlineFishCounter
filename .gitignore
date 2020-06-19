@@ -1,0 +1,6 @@
+venv/*
+.idea/*
+v1/app/online-fish-counter.db
+v1/app/test_online-fish-counter.db
+v1/coverage
+v1/migrations
