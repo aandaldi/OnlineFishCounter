@@ -1,0 +1,50 @@
+Example endpoint for register new user and returning user detail
+In this endpont the specification is taken from external YAML file
+---
+
+tags:
+  - usermanagement
+
+parameters:
+  - name: body
+    in: body
+    description: fetch username and password
+    required: true
+    schema:
+      type: object
+      $ref: '#/definitions/RegisterUser'
+
+responses:
+  200:
+    description: Person succesfully created.
+
+definitions:
+  RegisterUser:
+    required: [
+      username,
+      password
+    ]
+#    modified_by = args.get('username')
+    properties:
+      username:
+        type: string
+        example: jhon_doe12321
+      password:
+        type: string
+        example: mypassword
+      roles:
+        type: string
+        example: customer
+        description: choose (admin/customer)
+        default: all
+      create_by:
+        description: uuid admin
+        type: string
+        example: 98584bae-d064-4d49-8e96-66cb06b59ac9
+      modified_by:
+        description: uuid admin
+        type: string
+        example: 98584bae-d064-4d49-8e96-66cb06b59ac9
+
+
+

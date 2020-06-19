@@ -1,0 +1,35 @@
+Example endpoint returning a list of colors by palette
+In this example the specification is taken from external YAML file
+---
+
+tags:
+  - Auth
+
+parameters:
+  - name: body
+    in: body
+    description: fetch username and password
+    required: true
+    schema:
+      $ref: '#/definitions/LoginUser'
+
+responses:
+  200:
+    description: Person succesfully created.
+
+definitions:
+  LoginUser:
+    required: [
+      username,
+      password
+    ]
+    properties:
+      username:
+        type: string
+        example: jhon_doe12321
+      password:
+        type: string
+        example: mypassword
+
+
+

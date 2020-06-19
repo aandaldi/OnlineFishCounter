@@ -1,0 +1,10 @@
+Index endpoint returning all needed in user page
+In this enpoint the specification is taken from external YAML file
+---
+
+tags:
+  - usermanagement
+
+responses:
+  200:
+    description: logout PAGE
