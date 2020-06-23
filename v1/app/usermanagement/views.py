@@ -1,11 +1,12 @@
 from flask import Blueprint, request, make_response, jsonify
-from .models import UserModel
+from .models import UsermanagementModel
 from datetime import datetime
 from flask_praetorian import auth_required
 
 from app import guard, swagger
 
 user_blueprint = Blueprint('user', __name__, url_prefix='/users')
+
 
 @user_blueprint.route("/")
 def index():
@@ -30,12 +31,19 @@ def register_user():
     modified_date = datetime.utcnow()
     modified_by = args.get('username')
 
-    new_user = UserModel(username, password, roles, created_by, modified_date, modified_by)
+    new_user = UsermanagementModel(
+        username=username,
+        password=password,
+        roles=roles,
+        created_by=created_by,
+        modified_at=modified_date,
+        modified_by=modified_by
+    )
 
     try:
-        user_db = UserModel.lookup(username)
+        user_db = UsermanagementModel.lookup(username)
         if user_db:
-            return make_response(jsonify({"message": "username {} already exists".format(username)}), 409)
+            return make_response(jsonify({"message": "username {} already exists".format(username)}), 400)
         else:
             new_user.save_to_db()
             print("POST {}".format(new_user.to_json()))
@@ -49,7 +57,7 @@ def register_user():
 @auth_required
 def get_user_data(username):
     try:
-        user = UserModel.lookup(username)
+        user = UsermanagementModel.lookup(username)
         if user:
             return make_response(jsonify({"message": "success get data", "user": user.to_json()}), 200)
         return make_response(jsonify({"message": "user not exists"}), 404)
@@ -64,7 +72,7 @@ def update_user_data(username):
     args = request.get_json()
 
     try:
-        user = UserModel.lookup(username)
+        user = UsermanagementModel.lookup(username)
         if user:
             user.username = args.get('username')
             user.password = args.get('password')

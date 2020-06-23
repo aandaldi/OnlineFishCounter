@@ -7,7 +7,7 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///online-fish-counter.db'
     SECRET_KEY = 'keyDev'
-    JWT_ACCESS_LIFESPAN = {'seconds': 30}
+    JWT_ACCESS_LIFESPAN = {'seconds': 10}
     JWT_REFRESH_LIFESPAN = {'minutes': 20}
 
 
@@ -16,8 +16,10 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///test_online-fish-counter.db'
     SECRET_KEY = 'keyTesting'
-    JWT_ACCESS_LIFESPAN = {'seconds': 30}
-    JWT_REFRESH_LIFESPAN = {'minutes': 20}
+    JWT_ACCESS_LIFESPAN = {'seconds': 10}
+    JWT_REFRESH_LIFESPAN = {'minutes': 5}
+
+
 
 
 class ProductionConfig(BaseConfig):

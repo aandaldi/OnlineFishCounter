@@ -3,7 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 
-class UserModel(db.Model):
+class UsermanagementModel(db.Model):
     __tablename__ = 'usermanagement'
 
     uuid = db.Column(db.String(30), primary_key=True)
@@ -17,15 +17,14 @@ class UserModel(db.Model):
     last_login = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean(), default=True)
 
-    def __init__(self, username, password, roles, created_by,
-                 date_modified, modified_by):
+    user_session_models = db.relationship('UserSessionModel', lazy='select',
+                                          backref=db.backref('usermanagement', lazy='joined'))
+    def __init__(self, **kwargs):
         self.uuid = str(uuid4())
-        self.username = username
-        self.password = password
-        self.roles = roles
-        self.created_by = created_by
-        self.date_modified = date_modified
-        self.modified_by = modified_by
+        super().__init__(**kwargs)
+
+    def __repr__(self):
+        return "User {} ".format(self.username)
 
     def to_json(self):
         return {
@@ -50,7 +49,7 @@ class UserModel(db.Model):
 
     @classmethod
     def lookup(cls, username):
-        return cls.query.filter_by(username=username).one_or_none()
+        return cls.query.filter_by(username=username).first()
 
     @classmethod
     def identify(cls, uuid):
@@ -70,5 +69,3 @@ class UserModel(db.Model):
             return self.roles.split(',')
         except Exception:
             return []
-
-

@@ -1,5 +1,5 @@
 from app import create_app, db, guard
-from app.usermanagement.models import UserModel
+from app.usermanagement.models import UsermanagementModel
 from flask_script import Manager
 import unittest
 import coverage
@@ -61,13 +61,39 @@ def cov():
 
 @manager.command
 def insert_admin():
-    user = UserModel("admin", guard.hash_password("admin"), "admin", "admin", dt.now(), "admin")
-    try:
-        user.save_to_db()
-        return "admin inserted"
-    except Exception as e:
-        return e
+    admin = UsermanagementModel(
+        username="admin",
+        password=guard.hash_password("admin"),
+        roles="admin",
+        created_by="admin",
+        date_modified=dt.now(),
+        modified_by="admin"
+    )
 
+    user = UsermanagementModel.lookup("admin")
+
+    if not user:
+        try:
+            # admin.save_to_db()
+            print("okes")
+            return "admin inserted"
+        except Exception as e:
+            return e
+    else:
+        return "{} already exists".format(user.username)
+
+@manager.command
+def test_file(dir):
+    """
+    run this for test file
+    :param file:
+    :return:
+    """
+    tests = unittest.TestLoader().discover('tests/'+dir, pattern='*_test.py')
+    result = unittest.TextTestRunner(verbosity=2).run(tests)
+    if result.wasSuccessful():
+        return 0
+    return 1
 
 
 if __name__ == '__main__':

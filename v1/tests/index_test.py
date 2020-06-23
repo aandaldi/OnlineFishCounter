@@ -18,3 +18,4 @@ class IndexTests(BaseTest):
         with self.app as client:
             req = client.get('/')
             self.assertEqual(200, req.status_code)
+            # self.as
