@@ -17,12 +17,13 @@ def create_app():
     app.config.from_object('config.DevelopmentConfig')
 
     # Register model
-    from .usermanagement.models import UserModel
+    from .usermanagement.models import UsermanagementModel
+    from .auth.user_session_models import UserSessionModel
 
     # Initialize Plugins
     db.init_app(app)
     swagger.init_app(app)
-    guard.init_app(app, UserModel)
+    guard.init_app(app, UsermanagementModel)
 
     # Include our Routes
     @app.route('/')
@@ -33,6 +34,9 @@ def create_app():
         tags:
             - index
         description: This is Index
+        responses:
+          200:
+            description: logout PAGE
         """
         return "must create index page"
 
