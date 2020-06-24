@@ -4,7 +4,7 @@ from datetime import datetime as dt
 from app.usermanagement.models import UsermanagementModel
 
 
-class UserModelTest(BaseTest):
+class UserModelIntegrationTest(BaseTest):
     def test_create_and_read(self):
         with self.app_context:
             user = UsermanagementModel(
