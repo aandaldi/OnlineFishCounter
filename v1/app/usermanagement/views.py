@@ -46,7 +46,7 @@ def register_user():
             return make_response(jsonify({"message": "username {} already exists".format(username)}), 400)
         else:
             new_user.save_to_db()
-            print("POST {}".format(new_user.to_json()))
+            print("POST USERMANAGEMENT {}".format(new_user.to_json()))
             return make_response(jsonify({"message": "Greattt register {} success".format(username)}), 201)
     except Exception as e:
         print(e)
@@ -56,14 +56,10 @@ def register_user():
 @user_blueprint.route("/<username>", methods=['GET'])
 @auth_required
 def get_user_data(username):
-    try:
-        user = UsermanagementModel.lookup(username)
-        if user:
-            return make_response(jsonify({"message": "success get data", "user": user.to_json()}), 200)
-        return make_response(jsonify({"message": "user not exists"}), 404)
-    except Exception as e:
-        print(e)
-        return make_response(jsonify({"message": "something error"}), 500)
+    user = UsermanagementModel.lookup(username)
+    if user:
+        return make_response(jsonify({"message": "success get data user", "user": user.to_json()}), 200)
+    return make_response(jsonify({"message": "user not exists"}), 404)
 
 
 @user_blueprint.route("/<username>", methods=['PATCH'])

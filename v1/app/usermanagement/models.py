@@ -20,8 +20,9 @@ class UsermanagementModel(db.Model):
     user_session_models = db.relationship('UserSessionModel', lazy='select',
                                           backref=db.backref('usermanagement', lazy='joined'))
     def __init__(self, **kwargs):
-        self.uuid = str(uuid4())
         super().__init__(**kwargs)
+        self.uuid = str(uuid4())
+
 
     def __repr__(self):
         return "User {} ".format(self.username)

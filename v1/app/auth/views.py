@@ -8,7 +8,7 @@ from .user_session_models import UserSessionModel
 auth_blueprint = Blueprint('auth', __name__)
 
 
-@auth_blueprint.route('/admins/login', methods=['POST'])
+@auth_blueprint.route('/login', methods=['POST'])
 def login_admin():
     """
         file: apidocs/login_admin.yml
@@ -53,11 +53,12 @@ def refresh_token():
                                   "access_token": access_token}), 200)
 
 
-@auth_blueprint.route('/logout', methods=['POST'])
 @auth_required
+@auth_blueprint.route('/logout', methods=['POST'])
 def logout_admin():
     """
-    file: apidocs/logout_admin.yml
+        file: apidocs/logout.yml
+
     """
 
     args = request.headers['Authorization'].split()

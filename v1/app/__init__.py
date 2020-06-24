@@ -36,15 +36,18 @@ def create_app():
         description: This is Index
         responses:
           200:
-            description: logout PAGE
+            description: index PAGE
         """
         return "must create index page"
 
     # Register Blueprints
     from .auth.views import auth_blueprint
     from .usermanagement.views import user_blueprint
+    from .event.views import event_blueprint
 
     app.register_blueprint(user_blueprint)
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(event_blueprint)
+
 
     return app
