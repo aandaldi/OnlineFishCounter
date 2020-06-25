@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response, jsonify
 from .models import UsermanagementModel
-from datetime import datetime
+from datetime import datetime as dt
 from flask_praetorian import auth_required
 
 from app import guard, swagger
@@ -17,27 +17,27 @@ def index():
 
 
 @user_blueprint.route("", methods=['POST'])
-# @auth_required
+@auth_required
 def register_user():
     """
         file: apidocs/register_user.yml
     """
+    header = request.headers['Authorization']
+    user_id = guard.extract_jwt_token(header.split()[1]).get('id')
+
     args = request.get_json()
 
     username = args.get('username')
     password = guard.hash_password(args.get('password'))
     roles = args.get('roles')
-    created_by = args.get('username')
-    modified_date = datetime.utcnow()
-    modified_by = args.get('username')
 
     new_user = UsermanagementModel(
         username=username,
         password=password,
         roles=roles,
-        created_by=created_by,
-        modified_at=modified_date,
-        modified_by=modified_by
+        created_by=user_id,
+        date_modified=dt.now(),
+        modified_by=user_id
     )
 
     try:
@@ -47,7 +47,8 @@ def register_user():
         else:
             new_user.save_to_db()
             print("POST USERMANAGEMENT {}".format(new_user.to_json()))
-            return make_response(jsonify({"message": "Greattt register {} success".format(username)}), 201)
+            return make_response(jsonify({"message": "Greattt register {} success".format(username),
+                                          "usermanagement": new_user.to_json()}), 201)
     except Exception as e:
         print(e)
         return make_response(jsonify({"message": "something error"}), 500)

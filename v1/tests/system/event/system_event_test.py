@@ -6,9 +6,9 @@ class TestEvent(BaseTest):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                login = client.post('/admins/login', json={'username': 'admin', 'password': 'admin'})
+                login = client.post('/login', json={'username': 'admin', 'password': 'admin'})
                 token = login.get_json().get('access_token')
-                request = client.post('/events/',
+                request = client.post('/events',
                                       json={
                                           "name": "Launching",
                                           "date": "2020-10-10 20:20:20",
@@ -22,9 +22,9 @@ class TestEvent(BaseTest):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                login = client.post('/admins/login', json={'username': 'admin', 'password': 'admin'})
+                login = client.post('/login', json={'username': 'admin', 'password': 'admin'})
                 token = login.get_json().get('access_token')
-                event = client.post('/events/',
+                event = client.post('/events',
                                     json={
                                         "name": "Launching",
                                         "date": "2020-10-10 20:20:20",
@@ -33,7 +33,7 @@ class TestEvent(BaseTest):
                                     headers={'Authorization': 'Bearer {}'.format(token)})
                 self.assertEqual(event.status_code, 201)
 
-                request = client.post('/events/',
+                request = client.post('/events',
                                       json={
                                           "name": "Launching",
                                           "date": "2020-10-21 20:20:20",
@@ -47,20 +47,20 @@ class TestEvent(BaseTest):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                login = client.post('/admins/login', json={'username': 'admin', 'password': 'admin'})
+                login = client.post('/login', json={'username': 'admin', 'password': 'admin'})
                 token = login.get_json().get('access_token')
-                post_event = client.post('/events/',
-                                      json={
-                                          "name": "Launching",
-                                          "date": "2020-10-10 20:20:20",
-                                          "max_stick": 30
-                                      },
-                                      headers={'Authorization': 'Bearer {}'.format(token)})
+                post_event = client.post('/events',
+                                         headers={'Authorization': 'Bearer {}'.format(token)},
+                                         json={
+                                             "name": "Launching",
+                                             "date": "2020-10-10 20:20:20",
+                                             "max_stick": 30
+                                         })
 
                 eventId = post_event.get_json().get('event').get('uuid')
 
                 request = client.get('/events/{}'.format(eventId),
-                                      headers={'Authorization': 'Bearer {}'.format(token)})
+                                     headers={'Authorization': 'Bearer {}'.format(token)})
 
                 self.assertEqual(request.status_code, 200)
                 self.assertEqual(request.get_json().get('message'), "success get event data")

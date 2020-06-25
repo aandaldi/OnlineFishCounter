@@ -6,7 +6,7 @@ class UserSessionModel(db.Model):
     __tablename__ = 'user_session'
     uuid = db.Column(db.String(50), primary_key=True)
     access_token = db.Column(db.String(100))
-    usermanagement_uuid = db.Column(db.Integer(), db.ForeignKey('usermanagement.uuid'))
+    usermanagement_uuid = db.Column(db.String(30), db.ForeignKey('usermanagement.uuid'))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -13,6 +13,7 @@ def login_admin():
     """
         file: apidocs/login_admin.yml
     """
+
     args = request.get_json()
     username = args.get('username')
     password = args.get('password')

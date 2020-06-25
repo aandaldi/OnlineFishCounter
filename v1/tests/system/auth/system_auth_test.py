@@ -1,13 +1,11 @@
 from tests.base_tests import BaseTest, TestInsertAdmin
-import time
-
 
 class SystemTestAuth(BaseTest):
     def test_login_and_create_session_with_valid_user(self):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                request = client.post('/admins/login',
+                request = client.post('/login',
                                       json={
                                           'username': 'admin',
                                           'password': 'admin'
@@ -22,7 +20,7 @@ class SystemTestAuth(BaseTest):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                request = client.post('/admins/login',
+                request = client.post('/login',
                                       json={
                                           'username': 'not admin',
                                           'password': 'admin'
@@ -37,7 +35,7 @@ class SystemTestAuth(BaseTest):
         with self.app_context:
             TestInsertAdmin.insert_admin()
             with self.app.test_client() as client:
-                login = client.post('/admins/login',
+                login = client.post('/login',
                                     json={
                                         'username': 'admin',
                                         'password': 'admin'
@@ -49,7 +47,8 @@ class SystemTestAuth(BaseTest):
                                       headers={'Authorization': 'Bearer {}'.format(response_login.get('access_token'))}
                                       )
 
-                print(request.data)
+                self.assertEqual(request.get_json().get('message'), "logout has success")
+                self.assertEqual(request.status_code, 200)
 
 
     # def test_refresh_token(self):

@@ -19,6 +19,11 @@ class UsermanagementModel(db.Model):
 
     user_session_models = db.relationship('UserSessionModel', lazy='select',
                                           backref=db.backref('usermanagement', lazy='joined'))
+
+    event_fish = db.relationship('EventFishModel', lazy='dynamic')
+
+
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.uuid = str(uuid4())
@@ -44,6 +49,7 @@ class UsermanagementModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
 
     def update_on_db(self):
         db.session.commit()
