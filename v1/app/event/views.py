@@ -2,31 +2,33 @@ from flask import Blueprint, jsonify, make_response, request
 from flask_praetorian import auth_required
 from app import swagger, guard
 from app.event.models import EventModel
+from app.event.event_fish.models import EventFishModel
+
 from datetime import datetime as dt
 
 event_blueprint = Blueprint('event', __name__, url_prefix='/events')
 
 
-@event_blueprint.route('', methods=['GET'])
-@auth_required
-def index():
-    """
-    This is Index of Event Page
-    ---
-    description: This is Index
-    tags:
-        - Event
+# @event_blueprint.route('', methods=['GET'])
+# @auth_required
+# def index():
+#     """
+#     This is Index of Event Page
+#     ---
+#     description: This is Index
+#     tags:
+#         - Event
+#
+#     responses:
+#         200:
+#             description: index PAGE
+#     """
+#     return make_response(jsonify({
+#         'message': 'This is Event Index'
+#     }), 200)
 
-    responses:
-        200:
-            description: index PAGE
-    """
-    return make_response(jsonify({
-        'message': 'This is Event Index'
-    }), 200)
 
-
-@event_blueprint.route('/', methods=['POST'])
+@event_blueprint.route('', methods=['POST'])
 @auth_required
 def create_event():
     """
@@ -125,3 +127,5 @@ def update_event_data(eventId):
             return make_response(jsonify({"message": "something error"}), 500)
     else:
         return make_response(jsonify({"message": "event not found"}), 404)
+
+

@@ -18,7 +18,6 @@ def create_app():
 
     # Register model
     from .usermanagement.models import UsermanagementModel
-    from .auth.user_session_models import UserSessionModel
 
     # Initialize Plugins
     db.init_app(app)
@@ -44,10 +43,12 @@ def create_app():
     from .auth.views import auth_blueprint
     from .usermanagement.views import user_blueprint
     from .event.views import event_blueprint
+    from .event.event_fish.views import event_fish_blueprint
 
     app.register_blueprint(user_blueprint)
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(event_blueprint)
+    app.register_blueprint(event_fish_blueprint)
 
 
     return app
